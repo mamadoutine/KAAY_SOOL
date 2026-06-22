@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paiement – KAAY SOOL</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .paiement-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 40px;
+      padding: 50px 60px;
+      min-height: calc(100vh - 75px - 250px);
+      background: var(--cream);
+    }
+    .paiement-left h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px; font-weight: 700;
+      color: var(--dark); margin-bottom: 35px; letter-spacing: 2px;
+    }
+    .step-title {
+      font-size: 14px; font-weight: 700;
+      letter-spacing: 2px; color: var(--dark);
+      margin-bottom: 20px; padding-bottom: 10px;
+      border-bottom: 2px solid var(--gold);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .step-num {
+      background: var(--gold); color: var(--dark);
+      width: 26px; height: 26px; border-radius: 50%;
+      display: inline-flex; align-items: center;
+      justify-content: center; font-size: 13px; font-weight: 700;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .paiement-section {
+      background: var(--white); border-radius: 14px;
+      padding: 30px; margin-bottom: 25px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .payment-methods { display: flex; flex-direction: column; gap: 12px; }
+    .payment-method {
+      display: flex; align-items: center; gap: 15px;
+      padding: 16px 20px; border: 2px solid #eee;
+      border-radius: 10px; cursor: pointer; transition: all 0.2s;
+    }
+    .payment-method:hover, .payment-method.selected {
+      border-color: var(--gold); background: #fffdf5;
+    }
+    .payment-method input[type="radio"] { accent-color: var(--gold); width: 18px; height: 18px; }
+    .payment-method-name { font-size: 14px; font-weight: 600; letter-spacing: 1px; flex: 1; }
+    .payment-method-icon { font-size: 24px; }
+
+    /* RÉSUMÉ DROITE */
+    .order-summary-right {
+      background: var(--white); border-radius: 16px;
+      padding: 30px; height: fit-content;
+      position: sticky; top: 100px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    }
+    .summary-header {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--text-gray); margin-bottom: 20px;
+    }
+    .summary-item {
+      display: flex; align-items: center;
+      gap: 15px; padding: 12px 0;
+      border-bottom: 1px solid #f5f5f5;
+    }
+    .summary-item-img {
+      width: 55px; height: 55px;
+      background: #f5f5f5; border-radius: 8px;
+      display: flex; align-items: center;
+      justify-content: center; font-size: 22px; flex-shrink: 0;
+      overflow: hidden;
+    }
+    .summary-item-img img { width: 100%; height: 100%; object-fit: cover; }
+    .summary-item-name { font-size: 12px; font-weight: 600; color: var(--dark); margin-bottom: 4px; }
+    .summary-item-price { font-size: 13px; font-weight: 700; color: var(--gold); }
+    .summary-divider { height: 1px; background: #eee; margin: 15px 0; }
+    .summary-total-row {
+      display: flex; justify-content: space-between;
+      font-size: 18px; font-weight: 700; color: var(--dark); margin-top: 10px;
+    }
+
+    /* MODAL SUCCÈS */
+    .success-modal {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6); z-index: 9999;
+      align-items: center; justify-content: center;
+    }
+    .success-modal.show { display: flex; }
+    .success-box {
+      background: var(--white); border-radius: 20px;
+      padding: 60px 50px; text-align: center; max-width: 420px; width: 90%;
+    }
+    .success-box .icon { font-size: 70px; margin-bottom: 20px; display: block; }
+    .success-box h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px; color: var(--dark); margin-bottom: 15px;
+    }
+    .success-box p { color: var(--text-gray); font-size: 14px; margin-bottom: 10px; }
+    .success-box .order-id {
+      font-weight: 700; color: var(--gold);
+      font-size: 16px; margin-bottom: 25px;
+    }
+
+    /* MODAL WAVE */
+    .wave-modal {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6); z-index: 9999;
+      align-items: center; justify-content: center;
+    }
+    .wave-modal.show { display: flex; }
+    .wave-box {
+      background: #1a73e8; border-radius: 20px;
+      padding: 50px 40px; text-align: center;
+      max-width: 380px; width: 90%; color: white;
+    }
+    .wave-box .wave-logo { font-size: 60px; margin-bottom: 20px; }
+    .wave-box h2 { font-size: 22px; margin-bottom: 10px; }
+    .wave-box p { font-size: 14px; opacity: 0.85; margin-bottom: 25px; }
+    .wave-box .wave-amount {
+      font-size: 32px; font-weight: 700;
+      margin-bottom: 25px; color: #fff;
+    }
+    .wave-box input {
+      width: 100%; padding: 14px; border: none;
+      border-radius: 10px; font-size: 16px;
+      text-align: center; margin-bottom: 15px;
+      letter-spacing: 3px;
+    }
+    .wave-confirm-btn {
+      width: 100%; padding: 15px; background: #fff;
+      color: #1a73e8; border: none; border-radius: 10px;
+      font-size: 14px; font-weight: 700; cursor: pointer;
+    }
+
+    @media (max-width: 900px) {
+      .paiement-layout { grid-template-columns: 1fr; padding: 20px; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="logo">
+    <img src="images/logos.jpg" alt="KAAY SOOL" style="height:50px;object-fit:contain;">
+  </a>
+  <ul class="nav-links">
+    <li><a href="catalogue.html?cat=homme">Homme</a></li>
+    <li><a href="catalogue.html?cat=femme">Femme</a></li>
+    <li><a href="#">La Marque</a></li>
+    <li><a href="#">Nos Magasins</a></li>
+  </ul>
+ <div class="nav-actions">
+  <a href="catalogue.html">
+    <img src="images/recherche.png" alt="Recherche" class="nav-icon-img">
+  </a>
+  <a href="inscription.html">
+    <img src="images/Utilisateur.png" alt="Compte" class="nav-icon-img">
+  </a>
+  <span class="lang-switch">FR / ENG</span>
+  <a href="panier.html" class="cart-btn">
+    <img src="images/Panier.png" alt="Panier" class="nav-icon-img">
+    <span class="cart-count" id="cartCount">0</span>
+  </a>
+</div>
+</nav>
+
+<div class="paiement-layout">
+  <!-- GAUCHE : FORMULAIRE -->
+  <div class="paiement-left">
+    <h1>KAAY SOOL – Tunnel de Paiement</h1>
+
+    <!-- ÉTAPE 1 : LIVRAISON -->
+    <div class="paiement-section">
+      <div class="step-title"><span class="step-num">1</span> Informations de Livraison</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Prénom</label>
+          <input type="text" id="prenom" placeholder="Prénom">
+        </div>
+        <div class="form-group">
+          <label>Nom</label>
+          <input type="text" id="nom" placeholder="Nom">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Téléphone</label>
+        <input type="tel" id="telephone" placeholder="+221 77 000 00 00">
+      </div>
+      <div class="form-group">
+        <label>Quartier</label>
+        <input type="text" id="quartier" placeholder="Ex: Almadies, Plateau, Parcelles...">
+      </div>
+    </div>
+
+    <!-- ÉTAPE 2 : PAIEMENT -->
+    <div class="paiement-section">
+      <div class="step-title"><span class="step-num">2</span> Mode de Paiement</div>
+      <div class="payment-methods">
+        <label class="payment-method selected" onclick="selectPayment(this,'wave')">
+          <input type="radio" name="payment" value="wave" checked>
+          <span class="payment-method-name">Wave</span>
+          <span class="payment-method-icon">🌊</span>
+        </label>
+        <label class="payment-method" onclick="selectPayment(this,'orange')">
+          <input type="radio" name="payment" value="orange">
+          <span class="payment-method-name">Orange Money</span>
+          <span class="payment-method-icon">🟠</span>
+        </label>
+        <label class="payment-method" onclick="selectPayment(this,'free')">
+          <input type="radio" name="payment" value="free">
+          <span class="payment-method-name">Free Money</span>
+          <span class="payment-method-icon">🟢</span>
+        </label>
+        <label class="payment-method" onclick="selectPayment(this,'cash')">
+          <input type="radio" name="payment" value="cash">
+          <span class="payment-method-name">Paiement à la livraison</span>
+          <span class="payment-method-icon">💵</span>
+        </label>
+      </div>
+    </div>
+
+    <button class="btn-gold" style="width:100%;padding:18px;font-size:13px;"
+      onclick="confirmerCommande()">
+      Confirmer et Payer la Commande
+    </button>
+  </div>
+
+  <!-- DROITE : RÉSUMÉ -->
+  <div class="order-summary-right">
+    <div class="summary-header">Résumé</div>
+    <div id="paiementItems"></div>
+    <div class="summary-divider"></div>
+    <div class="summary-total-row">
+      <span>Total</span>
+      <span id="paiementTotal">0 FCFA</span>
+    </div>
+  </div>
+</div>
+
+<!-- MODEL WAVE -->
+<div class="wave-modal" id="waveModal">
+  <div class="wave-box">
+    <div class="wave-logo">🌊</div>
+    <h2>Paiement Wave</h2>
+    <p>Entrez votre numéro Wave pour confirmer</p>
+    <div class="wave-amount" id="waveAmount">0 FCFA</div>
+    <input type="tel" id="wavePhone" placeholder="77 000 00 00" maxlength="12">
+    <button class="wave-confirm-btn" onclick="confirmerWave()">
+      ✅ Confirmer le Paiement
+    </button>
+    <button onclick="fermerWave()"
+      style="width:100%;padding:12px;background:transparent;border:1px solid rgba(255,255,255,0.3);
+             color:white;border-radius:10px;margin-top:10px;cursor:pointer;">
+      Annuler
+    </button>
+  </div>
+</div>
+
+<!-- MODEL SUCCÈS -->
+<div class="success-modal" id="successModal">
+  <div class="success-box">
+    <span class="icon">🎉</span>
+    <h2>Commande Confirmée !</h2>
+    <p>Merci pour votre achat.</p>
+    <div class="order-id" id="orderId"></div>
+    <p>Vous serez contacté prochainement pour la livraison.</p>
+    <br>
+    <a href="index.html" class="btn-gold" onclick="viderPanier()">
+      Retour à l'accueil
+    </a>
+  </div>
+</div>
+  <!-- FOOTER-->
+<footer>
+  <div class="footer-grid">
+  <div class="footer-col">
+    <div class="footer-brand">KAAY SOOL</div>
+    <p>L'élégance et le style sénégalais à portée de clic.</p>
+    <div class="social-links">
+      <a href="https://instagram.com/kaaysool" target="_blank" class="ig">
+        <img src="images/instagram.png" alt="Instagram">
+      </a>
+      <a href="https://wa.me/221763693421" target="_blank" class="wa">
+        <img src="images/whatsapp.png" alt="WhatsApp">
+      </a>
+      <a href="https://facebook.com/kaaysool" target="_blank" class="fb">
+        <img src="images/facebook.png" alt="Facebook">
+      </a>
+    </div>
+  </div>
+    <div class="footer-col">
+      <h4>Besoin d'aide</h4>
+      <a href="#">Contactez-nous</a>
+      <a href="#">Suivi de commande</a>
+      <a href="#">Guide des tailles</a>
+      <a href="#">FAQ</a>
+    </div>
+    <div class="footer-col">
+      <h4>Notre Boutique</h4>
+      <p>• Visitez notre showroom à Dakar, Sénégal.</p>
+      <p>• Tél: +221 763693421</p>
+      <p>• Email: contact@kaaysool.sn</p>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 KAAY SOOL. Tous droits réservés.</div>
+</footer>
+
+<script src="script.js"></script>
+<script>
+  let modePaiement = 'wave';
+
+  function selectPayment(label, mode) {
+    document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('selected'));
+    label.classList.add('selected');
+    modePaiement = mode;
+  }
+
+  // Afficher le résumé du panier
+  function renderResume() {
+    const cart = getCart();
+    const total = getCartTotal();
+
+    document.getElementById('paiementTotal').textContent =
+      total.toLocaleString('fr-FR') + ' FCFA';
+
+    document.getElementById('paiementItems').innerHTML = cart.map(item => `
+      <div class="summary-item">
+        <div class="summary-item-img">
+          <img src="${item.img || ''}" alt="${item.name}"
+               onerror="this.parentElement.textContent='${item.emoji || '👗'}'">
+        </div>
+        <div style="flex:1;">
+          <div class="summary-item-name">${item.name.replace('KAAY SOOL – ','')}</div>
+          <div style="font-size:11px;color:#999;">Taille: ${item.taille || 'M'} × ${item.qty}</div>
+          <div class="summary-item-price">${(item.price * item.qty).toLocaleString('fr-FR')}f CFA</div>
+        </div>
+      </div>`).join('');
+  }
+
+  // Générer un ID de commande
+  function genOrderId() {
+    return '#KS' + Date.now().toString().slice(-6);
+  }
+
+  // Sauvegarder la commande dans localStorage pour l'admin
+  function sauvegarderCommande(prenom, nom, tel, quartier, mode, total) {
+    const orderId = genOrderId();
+    const commandes = JSON.parse(localStorage.getItem('kaaysool_commandes') || '[]');
+    const cart = getCart();
+
+    commandes.unshift({
+      id: orderId,
+      prenom, nom, tel, quartier,
+      mode_paiement: mode,
+      total,
+      articles: cart,
+      statut: 'En attente',
+      date: new Date().toLocaleDateString('fr-FR')
+    });
+
+    localStorage.setItem('kaaysool_commandes', JSON.stringify(commandes));
+    return orderId;
+  }
+
+  function confirmerCommande() {
+    const prenom   = document.getElementById('prenom').value.trim();
+    const nom      = document.getElementById('nom').value.trim();
+    const tel      = document.getElementById('telephone').value.trim();
+    const quartier = document.getElementById('quartier').value.trim();
+    const total    = getCartTotal();
+
+    if (!prenom || !nom || !tel || !quartier) {
+      showNotification('⚠️ Remplissez tous les champs de livraison !');
+      return;
+    }
+
+    if (getCart().length === 0) {
+      showNotification('⚠️ Votre panier est vide !');
+      return;
+    }
+
+    // Si Wave ou Orange Money → afficher modal paiement mobile
+    if (modePaiement === 'wave') {
+      document.getElementById('waveAmount').textContent =
+        total.toLocaleString('fr-FR') + ' FCFA';
+      document.getElementById('waveModal').classList.add('show');
+      return;
+    }
+
+    // Autres modes → confirmer directement
+    const orderId = sauvegarderCommande(prenom, nom, tel, quartier, modePaiement, total);
+    afficherSucces(orderId);
+  }
+
+  function confirmerWave() {
+    const phone = document.getElementById('wavePhone').value.trim();
+    if (!phone || phone.length < 8) {
+      alert('Entrez un numéro Wave valide !');
+      return;
+    }
+
+    const prenom   = document.getElementById('prenom').value.trim();
+    const nom      = document.getElementById('nom').value.trim();
+    const tel      = document.getElementById('telephone').value.trim();
+    const quartier = document.getElementById('quartier').value.trim();
+    const total    = getCartTotal();
+
+    document.getElementById('waveModal').classList.remove('show');
+    const orderId = sauvegarderCommande(prenom, nom, tel, quartier, 'Wave', total);
+    afficherSucces(orderId);
+  }
+
+  function fermerWave() {
+    document.getElementById('waveModal').classList.remove('show');
+  }
+
+  function afficherSucces(orderId) {
+    document.getElementById('orderId').textContent = 'Commande ' + orderId;
+    document.getElementById('successModal').classList.add('show');
+  }
+
+  function viderPanier() {
+    localStorage.removeItem('kaaysool_cart');
+  }
+
+  // Init
+  renderResume();
+  updateCartUI();
+</script>
+</body>
+</html>

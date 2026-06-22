@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin – KAAY SOOL</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background: #f0f2f5; }
+    .admin-layout { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+    .admin-sidebar { background: var(--dark); display: flex; flex-direction: column; }
+    .admin-logo { padding: 25px; border-bottom: 1px solid #333; display: flex; align-items: center; gap: 12px; }
+    .admin-logo img { height: 40px; object-fit: contain; }
+    .admin-nav { padding: 20px 0; flex: 1; }
+    .admin-nav-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 25px; color: #888; font-size: 14px;
+      font-weight: 600; letter-spacing: 1px; cursor: pointer;
+      transition: all 0.2s; border-left: 3px solid transparent;
+      text-decoration: none;
+    }
+    .admin-nav-item:hover, .admin-nav-item.active {
+      color: var(--white); background: rgba(201,168,76,0.08);
+      border-left-color: var(--gold);
+    }
+    .admin-nav-item .nav-icon { font-size: 18px; }
+    .admin-logout { padding: 20px 25px; border-top: 1px solid #333; }
+    .admin-main { padding: 40px; overflow-y: auto; }
+    .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; }
+    .admin-header h1 { font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--dark); }
+    .revenue-card {
+      background: var(--dark); border-radius: 14px;
+      padding: 25px 30px; color: var(--white); margin-bottom: 30px;
+    }
+    .revenue-label { font-size: 11px; letter-spacing: 3px; color: #888; text-transform: uppercase; margin-bottom: 8px; }
+    .revenue-value { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 700; color: var(--gold); }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
+    .stat-card {
+      background: var(--white); border-radius: 14px;
+      padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      border-left: 4px solid var(--gold);
+    }
+    .stat-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-gray); margin-bottom: 10px; }
+    .stat-value { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 700; color: var(--dark); }
+    .admin-table-card {
+      background: var(--white); border-radius: 14px;
+      padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 25px;
+    }
+    .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .table-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 700; color: var(--dark); }
+    table { width: 100%; border-collapse: collapse; }
+    th { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-gray); padding: 10px 15px; text-align: left; border-bottom: 2px solid #f0f0f0; }
+    td { padding: 15px; font-size: 14px; border-bottom: 1px solid #f8f8f8; color: var(--text-dark); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafafa; }
+    .badge { padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 1px; }
+    .badge-livré { background: #d4edda; color: #27AE60; }
+    .badge-attente { background: #fff3cd; color: #E67E22; }
+    .badge-cours { background: #cce5ff; color: #004085; }
+    .badge-annulé { background: #fde8e8; color: #C0392B; }
+    .statut-select {
+      padding: 5px 10px; border: 1.5px solid #ddd;
+      border-radius: 20px; font-size: 12px;
+      font-family: 'Josefin Sans', sans-serif;
+      cursor: pointer; outline: none;
+    }
+    .empty-orders {
+      text-align: center; padding: 40px;
+      color: var(--text-gray); font-size: 14px;
+    }
+    @media (max-width: 900px) {
+      .admin-layout { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2,1fr); }
+    }
+  </style>
+</head>
+<body>
+  <!-- PAGE DE CONNEXION ADMIN -->
+<div id="loginPage" style="
+  position: fixed; inset: 0; z-index: 99999;
+  background: linear-gradient(135deg, #0A0A0A 0%, #1a1a0a 50%, #0A0A0A 100%);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column;
+">
+  <!-- LOGO -->
+  <div style="text-align:center; margin-bottom: 40px; animation: fadeIn 1s ease;">
+    <img src="images/logos.jpg" alt="KAAY SOOL"
+      style="width:150px; height:150px; object-fit:contain;
+             border-radius:50%; border: 3px solid #C9A84C;
+             box-shadow: 0 0 40px rgba(201,168,76,0.5),
+                         0 0 80px rgba(201,168,76,0.2);
+             animation: pulse 2s infinite;">
+    <div style="font-family:'Cormorant Garamond',serif;
+                font-size:32px; color:#C9A84C;
+                letter-spacing:6px; margin-top:20px;
+                font-weight:700;">
+      KAAY SOOL
+    </div>
+    <div style="font-size:11px; color:#666;
+                letter-spacing:4px; margin-top:5px;">
+      PANNEAU ADMINISTRATEUR
+    </div>
+  </div>
+
+  <!-- FORMULAIRE -->
+  <div style="background:rgba(255,255,255,0.05);
+              border: 1px solid rgba(201,168,76,0.3);
+              border-radius:20px; padding:40px;
+              width:90%; max-width:380px;
+              backdrop-filter:blur(10px);">
+    <div style="font-family:'Josefin Sans',sans-serif;
+                font-size:12px; font-weight:700;
+                letter-spacing:3px; color:#C9A84C;
+                text-align:center; margin-bottom:25px;">
+      🔒 ACCÈS SÉCURISÉ
+    </div>
+
+    <div style="margin-bottom:15px;">
+      <input type="text" id="adminUser" placeholder="Identifiant"
+        style="width:100%; padding:14px 18px;
+               background:rgba(255,255,255,0.08);
+               border:1.5px solid rgba(201,168,76,0.3);
+               border-radius:10px; color:#fff;
+               font-family:'Josefin Sans',sans-serif;
+               font-size:14px; outline:none;
+               letter-spacing:1px;"
+        onfocus="this.style.borderColor='#C9A84C'"
+        onblur="this.style.borderColor='rgba(201,168,76,0.3)'">
+    </div>
+
+    <div style="margin-bottom:25px;">
+      <input type="password" id="adminPass" placeholder="Mot de passe"
+        style="width:100%; padding:14px 18px;
+               background:rgba(255,255,255,0.08);
+               border:1.5px solid rgba(201,168,76,0.3);
+               border-radius:10px; color:#fff;
+               font-family:'Josefin Sans',sans-serif;
+               font-size:14px; outline:none;
+               letter-spacing:1px;"
+        onfocus="this.style.borderColor='#C9A84C'"
+        onblur="this.style.borderColor='rgba(201,168,76,0.3)'"
+        onkeypress="if(event.key==='Enter') verifierAdmin()">
+    </div>
+
+    <button onclick="verifierAdmin()"
+      style="width:100%; padding:16px;
+             background:linear-gradient(135deg,#C9A84C,#E8C96A);
+             color:#0A0A0A; border:none; border-radius:10px;
+             font-family:'Josefin Sans',sans-serif;
+             font-size:12px; font-weight:700;
+             letter-spacing:3px; cursor:pointer;
+             transition:all 0.3s;"
+      onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 25px rgba(201,168,76,0.4)'"
+      onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">
+      ACCÉDER AU DASHBOARD
+    </button>
+
+    <div id="loginError" style="
+      color:#e74c3c; text-align:center;
+      font-size:12px; margin-top:15px;
+      letter-spacing:1px; display:none;">
+      ❌ Identifiant ou mot de passe incorrect
+    </div>
+  </div>
+
+  <a href="index.html" style="
+    color:#555; font-size:11px;
+    letter-spacing:2px; margin-top:25px;
+    text-decoration:none; transition:color 0.3s;"
+    onmouseover="this.style.color='#C9A84C'"
+    onmouseout="this.style.color='#555'">
+    ← Retour au site
+  </a>
+</div>
+
+<style>
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 40px rgba(201,168,76,0.5), 0 0 80px rgba(201,168,76,0.2); }
+    50%       { box-shadow: 0 0 60px rgba(201,168,76,0.8), 0 0 120px rgba(201,168,76,0.4); }
+  }
+  @keyframes fadeIn {
+    from { opacity:0; transform:translateY(-20px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+</style>
+<div class="admin-layout">
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar">
+    <div class="admin-logo">
+      <img src="images/logos.jpg" alt="KAAY SOOL">
+    </div>
+    <nav class="admin-nav">
+      <a class="admin-nav-item active" onclick="showPanel('dashboard')" href="#">
+        <span class="nav-icon">📊</span> Tableau de Bord
+      </a>
+      <a class="admin-nav-item" onclick="showPanel('commandes')" href="#">
+        <span class="nav-icon">📦</span> Commandes
+      </a>
+      <a class="admin-nav-item" onclick="showPanel('produits')" href="#">
+        <span class="nav-icon">👗</span> Produits
+      </a>
+      <a class="admin-nav-item" onclick="showPanel('clients')" href="#">
+        <span class="nav-icon">👥</span> Clients
+      </a>
+    </nav>
+    <div class="admin-logout">
+      <a href="index.html" class="btn-outline"
+         style="display:block;text-align:center;padding:10px 20px;font-size:11px;">
+        ← Retour au site
+      </a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="admin-main">
+
+    <!-- ===== DASHBOARD ===== -->
+    <div id="panel-dashboard">
+      <div class="admin-header">
+        <h1>Tableau de Bord</h1>
+        <span style="font-size:13px;color:var(--text-gray);" id="dateAujourdhui"></span>
+      </div>
+
+      <div class="revenue-card">
+        <div class="revenue-label">Chiffre d'affaires total</div>
+        <div class="revenue-value" id="chiffreAffaires">0 FCFA</div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Commandes</div>
+          <div class="stat-value" id="statTotal">0</div>
+        </div>
+        <div class="stat-card" style="border-left-color:#E67E22;">
+          <div class="stat-label">En Attente</div>
+          <div class="stat-value" id="statAttente">0</div>
+        </div>
+        <div class="stat-card" style="border-left-color:#27AE60;">
+          <div class="stat-label">Livrées</div>
+          <div class="stat-value" id="statLivrees">0</div>
+        </div>
+        <div class="stat-card" style="border-left-color:#3498db;">
+          <div class="stat-label">Produits</div>
+          <div class="stat-value">8</div>
+        </div>
+        <div class="stats-card" style="border: left color #9b59b6; ;">
+        <div class="stats-label">Connectés Aujourd'hui</div>
+        <div class="stat-value" id="statConnectes">0</div>
+        </div>
+      </div>
+
+      <div class="admin-table-card">
+        <div class="table-header">
+          <div class="table-title">Dernières Commandes</div>
+          <button class="btn-gold" style="padding:10px 20px;font-size:11px;"
+            onclick="showPanel('commandes')">Voir tout</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th><th>Client</th><th>Date</th><th>Total</th><th>Paiement</th><th>Statut</th>
+            </tr>
+          </thead>
+          <tbody id="dashboardCommandes">
+            <tr><td colspan="6" class="empty-orders">Aucune commande reçue</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== COMMANDES ===== -->
+    <div id="panel-commandes" style="display:none;">
+      <div class="admin-header">
+        <h1>Toutes les Commandes</h1>
+        <button class="btn-gold" style="padding:10px 20px;font-size:11px;"
+          onclick="viderCommandes()">🗑️ Vider</button>
+      </div>
+      <div class="admin-table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th><th>Client</th><th>Téléphone</th><th>Quartier</th>
+              <th>Articles</th><th>Total</th><th>Paiement</th><th>Date</th><th>Statut</th>
+            </tr>
+          </thead>
+          <tbody id="toutesCommandes">
+            <tr><td colspan="9" class="empty-orders">Aucune commande</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== PRODUITS ===== -->
+    <div id="panel-produits" style="display:none;">
+      <div class="admin-header"><h1>Gestion des Produits</h1></div>
+      <div class="admin-table-card">
+        <table>
+          <thead>
+            <tr><th>Produit</th><th>Catégorie</th><th>Prix</th><th>Tailles</th></tr>
+          </thead>
+          <tbody id="produitsTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== CLIENTS ===== -->
+    <div id="panel-clients" style="display:none;">
+      <div class="admin-header"><h1>Clients</h1></div>
+      <div class="admin-table-card">
+        <table>
+          <thead>
+<tr>
+  <th>Email</th>
+  <th>Date</th>
+  <th>Heure</th>
+  <th>Rôle</th>
+</tr>
+          </thead>
+          <tbody id="clientsTable">
+            <tr><td colspan="5" class="empty-orders">Aucun client</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="script.js"></script>
+<script>
+  // Identifiants admin
+const ADMIN_USER = 'KAAYSOOL';
+const ADMIN_PASS = 'KS2026';
+
+function verifierAdmin() {
+  const user = document.getElementById('adminUser').value.trim();
+  const pass = document.getElementById('adminPass').value.trim();
+
+  if (user === ADMIN_USER && pass === ADMIN_PASS) {
+    sessionStorage.setItem('admin_access', 'true');
+    document.getElementById('loginPage').style.display = 'none';
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+    document.getElementById('adminPass').value = '';
+  }
+}
+
+// Vérifier si déjà connecté
+if (sessionStorage.getItem('admin_access') === 'true') {
+  document.getElementById('loginPage').style.display = 'none';
+}
+  // Date du jour
+  document.getElementById('dateAujourdhui').textContent =
+    '📅 ' + new Date().toLocaleDateString('fr-FR', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+
+  // Récupérer les commandes depuis localStorage
+  function getCommandes() {
+    return JSON.parse(localStorage.getItem('kaaysool_commandes') || '[]');
+  }
+
+  function sauvegarderCommandes(commandes) {
+    localStorage.setItem('kaaysool_commandes', JSON.stringify(commandes));
+  }
+
+  function getBadge(statut) {
+    const map = {
+      'En attente': 'badge-attente',
+      'En cours':   'badge-cours',
+      'Livré':      'badge-livré',
+      'Annulé':     'badge-annulé',
+    };
+    return `<span class="badge ${map[statut] || 'badge-attente'}">${statut}</span>`;
+  }
+
+  function changerStatut(index, val) {
+    const commandes = getCommandes();
+    commandes[index].statut = val;
+    sauvegarderCommandes(commandes);
+    renderAll();
+  }
+
+  function viderCommandes() {
+    if (confirm('Vider toutes les commandes ?')) {
+      localStorage.removeItem('kaaysool_commandes');
+      renderAll();
+    }
+  }
+
+  function renderAll() {
+    const commandes = getCommandes();
+
+    // Stats
+    const total = commandes.reduce((s, c) => s + (c.total || 0), 0);
+    document.getElementById('chiffreAffaires').textContent = total.toLocaleString('fr-FR') + ' FCFA';
+    document.getElementById('statTotal').textContent = commandes.length;
+    document.getElementById('statAttente').textContent = commandes.filter(c => c.statut === 'En attente').length;
+    document.getElementById('statLivrees').textContent = commandes.filter(c => c.statut === 'Livré').length;
+
+    // Dashboard - 5 dernières
+    const dashTbody = document.getElementById('dashboardCommandes');
+    if (commandes.length === 0) {
+      dashTbody.innerHTML = '<tr><td colspan="6" class="empty-orders">Aucune commande reçue</td></tr>';
+    } else {
+      dashTbody.innerHTML = commandes.slice(0, 5).map((c, i) => `
+        <tr>
+          <td><strong>${c.id}</strong></td>
+          <td>${c.prenom} ${c.nom}</td>
+          <td>${c.date}</td>
+          <td style="color:var(--gold);font-weight:700;">${(c.total||0).toLocaleString('fr-FR')} FCFA</td>
+          <td>${c.mode_paiement}</td>
+          <td>${getBadge(c.statut)}</td>
+        </tr>`).join('');
+    }
+
+    // Toutes les commandes
+    const toutTbody = document.getElementById('toutesCommandes');
+    if (commandes.length === 0) {
+      toutTbody.innerHTML = '<tr><td colspan="9" class="empty-orders">Aucune commande</td></tr>';
+    } else {
+      toutTbody.innerHTML = commandes.map((c, i) => `
+        <tr>
+          <td><strong>${c.id}</strong></td>
+          <td>${c.prenom} ${c.nom}</td>
+          <td>${c.tel}</td>
+          <td>${c.quartier}</td>
+          <td>${(c.articles || []).length} article(s)</td>
+          <td style="color:var(--gold);font-weight:700;">${(c.total||0).toLocaleString('fr-FR')} FCFA</td>
+          <td>${c.mode_paiement}</td>
+          <td>${c.date}</td>
+          <td>
+            <select class="statut-select" onchange="changerStatut(${i}, this.value)">
+              <option ${c.statut==='En attente'?'selected':''}>En attente</option>
+              <option ${c.statut==='En cours'?'selected':''}>En cours</option>
+              <option ${c.statut==='Livré'?'selected':''}>Livré</option>
+              <option ${c.statut==='Annulé'?'selected':''}>Annulé</option>
+            </select>
+          </td>
+        </tr>`).join('');
+    }
+    }
+// Clients inscrits
+const clients = JSON.parse(localStorage.getItem('kaaysool_clients') || '[]');
+const clientsTbody = document.getElementById('clientsTable');
+
+if (clients.length === 0) {
+  clientsTbody.innerHTML = `
+    <tr>
+      <td colspan="4" class="empty-orders">
+        Aucun client inscrit
+      </td>
+    </tr>`;
+} else {
+  clientsTbody.innerHTML = clients.map(c => `
+    <tr>
+      <td>👤 ${c.email}</td>
+      <td>${c.date}</td>
+      <td>${c.heure}</td>
+      <td><span class="badge badge-livré">${c.role}</span></td>
+    </tr>`).join('');
+}
+  // Produits et son img dans admin produit
+  const produitsBody = document.getElementById('produitsTable');
+  products.forEach(p => {
+    produitsBody.innerHTML += `
+      <tr>
+        <td> 
+         <img src="${p.img}" alt="${p.name}"
+          style="width: 50px; height: 50px;objet-fite:cover;
+         border-radius:8px;margin-right:10px;
+         vertical-align:middle;">
+         ${p.name.replace('KAAY SOOL - ','')}
+          </td>
+        <td>${p.cat}</td>
+        <td style="color:var(--gold);font-weight:700;">${p.price.toLocaleString('fr-FR')} FCFA</td>
+        <td>${p.taille.join(', ')}</td>
+      </tr>`;
+  });
+
+  function showPanel(name) {
+    ['dashboard','commandes','produits','clients'].forEach(p => {
+      document.getElementById('panel-' + p).style.display = p === name ? 'block' : 'none';
+    });
+    document.querySelectorAll('.admin-nav-item').forEach((el, i) => {
+      el.classList.toggle('active',
+        ['dashboard','commandes','produits','clients'][i] === name);
+    });
+    if (name !== 'dashboard') renderAll();
+  }
+   renderAll();
+   //connexion du jour
+   const conexions = JSON.parse(localStorage.getItem('kaaysool_connexions') || '[]');
+   const aujourdhui = new Date() .toLocaleDateString('fr-FR');
+   const connectesAujourdhui = conexions.filter(c=c.date=== aujourdhui) .length;
+   document .getElementById('statConnectes') .textContent = connectesAujourdhui;
+</script>
+</body>
+</html>
