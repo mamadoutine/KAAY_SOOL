@@ -2,7 +2,6 @@
 --  BASE DE DONNÉES : KAAY SOOL
 --  E-commerce Mode Sénégalaise
 --  Licence 3 IDA UNCHK – 2025/2026
---  À importer dans phpMyAdmin
 -- ================================================
 
 CREATE DATABASE IF NOT EXISTS kaay_sool
@@ -19,7 +18,7 @@ CREATE TABLE utilisateurs (
   nom         VARCHAR(100) NOT NULL,
   prenom      VARCHAR(100) NOT NULL,
   email       VARCHAR(150) NOT NULL UNIQUE,
-  mot_de_passe VARCHAR(255) NOT NULL,  -- bcrypt hash
+  mot_de_passe VARCHAR(255) NOT NULL, 
   telephone   VARCHAR(20),
   quartier    VARCHAR(100),
   role        ENUM('client','admin') DEFAULT 'client',
@@ -84,7 +83,7 @@ CREATE TABLE produit_couleurs (
 -- ================================================
 CREATE TABLE commandes (
   id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  utilisateur_id  INT UNSIGNED,                  -- NULL si commande invité
+  utilisateur_id  INT UNSIGNED,                  
   prenom          VARCHAR(100) NOT NULL,
   nom             VARCHAR(100) NOT NULL,
   telephone       VARCHAR(20) NOT NULL,
@@ -100,13 +99,13 @@ CREATE TABLE commandes (
 ) ENGINE=InnoDB;
 
 -- ================================================
--- TABLE : commande_articles  (détails de commande)
+-- TABLE : commande_articles  
 -- ================================================
 CREATE TABLE commande_articles (
   id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   commande_id INT UNSIGNED NOT NULL,
   produit_id  INT UNSIGNED NOT NULL,
-  nom_produit VARCHAR(200) NOT NULL,   -- snapshot au moment de la commande
+  nom_produit VARCHAR(200) NOT NULL,   
   prix_unitaire DECIMAL(10,2) NOT NULL,
   taille      VARCHAR(10),
   couleur     VARCHAR(7),
@@ -122,14 +121,14 @@ CREATE TABLE commande_articles (
 CREATE TABLE coupons (
   id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   code        VARCHAR(50) NOT NULL UNIQUE,
-  reduction   DECIMAL(5,2) NOT NULL,          -- pourcentage ex: 10.00 = 10%
+  reduction   DECIMAL(5,2) NOT NULL,          
   actif       TINYINT(1) DEFAULT 1,
   date_expiry DATE,
   created_at  DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
 -- ================================================
--- TABLE : avis  (optionnel)
+-- TABLE : avis 
 -- ================================================
 CREATE TABLE avis (
   id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -217,10 +216,10 @@ INSERT INTO produit_couleurs (produit_id, nom_couleur, code_hex) VALUES
 (7,'Vert','#228B22'),(7,'Or','#FFD700'),
 (8,'Bleu roi','#4169E1'),(8,'Noir','#1C1C1C');
 
--- Admin par défaut  (mot de passe : Admin1234!)
+-- Admin par défaut  (mot de passe : KS2026)
 INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, role) VALUES
 ('SOOL', 'Admin', 'admin@kaaysool.sn',
- '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', -- hash bcrypt de "password" — À CHANGER
+ '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 
  'admin');
 
 -- Coupon de test
