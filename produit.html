@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kaay Sool</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<style>
+/* Produit */
+
+.product-container{
+display:flex;
+padding:30px;
+gap:40px;
+grid-template-columns: 1fr 1fr;
+background: var(--white);
+}
+
+.product-image{
+position:relative;
+width:200px;
+
+
+
+
+}
+
+.product-image img{
+width:200%;
+border-radius:10px;
+height: 495PX;
+width: 30%;
+          
+}
+
+.TITRE{
+position:absolute;
+bottom:20%;
+left:50%;
+color:rgb(137, 100, 6);
+white-space: nowrap;
+}
+
+.TITRE h1{
+font-size:35px;
+}
+
+.TITRE button{
+background:#caa32d;
+border:none;
+padding:12px;
+border-radius:20px;
+margin-top:10px;
+cursor: pointer;
+}
+
+/* détails */
+
+.product-details{
+width:50%;
+margin-left: 200px;
+}
+
+.product-details h2{
+color:#caa32d;
+margin-bottom:15px;
+}
+
+.product-details h1{
+margin-bottom:15px;
+}
+
+.sizes button{
+padding:10px 15px;
+margin:10px;
+cursor: pointer;
+}
+.colors span{
+width:30px;
+height:30px;
+display:inline-block;
+margin:10px;
+border-radius:5px;
+}
+
+.blue{
+background:lightblue;
+}
+
+.green{
+background:green;
+}
+
+.brown{
+background:brown;
+}
+
+.gold{
+background:gold;
+}
+.P1{
+    margin-left: 22px;
+}
+.P2{
+    margin-left: 22px;
+}
+
+.text{
+display:flex;
+margin-top:15px;
+}
+
+.text span{
+background: #dedada;
+ width:40px;
+    height:40px;
+    border:1px solid #000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.buton{
+margin-top: -50px;
+background:#caa32d;
+padding:15px 25px;
+border:none;
+border-radius:20px;
+margin-left: 150Px;
+cursor: pointer;
+
+}
+
+#H1{
+    margin-left: 22px;
+    margin-top: -30px;
+}
+/* Cartes */
+
+.cards{
+display:flex;
+gap: 20PX;
+padding:10px;
+margin-left: 10px;
+
+}
+
+
+
+.card img{
+width:200px;
+height:200px;
+object-fit:cover;
+border-radius: 10px;;
+}
+
+
+.card button{
+background:#caa32d;
+padding:10px;
+border:none;
+border-radius:20px;
+width: 160px;
+margin-top:20px;
+cursor: pointer;
+}
+
+
+/* Footer */
+
+
+
+.Details{
+    margin-left: 570px;
+    color: rgb(86, 86, 238);
+    font-size: 10px;
+    cursor: pointer;
+}
+.reco{
+  margin-left: 970px;  
+  margin-top: -20px;
+  text-align: center;
+  color: mediumpurple;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+
+</style>
+
+<nav class="navbar">
+  <a href="index.html" class="logo">
+    <img src="images/logos.jpg" alt="KAAY SOOL" style="height:50px;object-fit:contain;">
+  </a>
+  <ul class="nav-links">
+    <li><a href="catalogue.html?cat=homme">Homme</a></li>
+    <li><a href="catalogue.html?cat=femme">Femme</a></li>
+    <li><a href="#">La Marque</a></li>
+    <li><a href="#">Nos Magasins</a></li>
+  </ul>
+ <div class="nav-actions">
+  <a href="catalogue.html">
+    <img src="images/recherche.png" alt="Recherche" class="nav-icon-img">
+  </a>
+  <a href="inscription.html">
+    <img src="images/Utilisateur.png" alt="Compte" class="nav-icon-img">
+  </a>
+  <span class="lang-switch">FR / ENG</span>
+  <a href="panier.html" class="cart-btn">
+    <img src="images/Panier.png" alt="Panier" class="nav-icon-img">
+    <span class="cart-count" id="cartCount">0</span>
+  </a>
+</div>
+</nav>
+
+
+
+<section class="product-container">
+<div class="product-image">
+Product View
+<img src="images/boubou-bazin ricche.jpg" alt="Grand Boubou"> 
+
+
+<div class="TITRE">
+<h1>L'ÉLÉGANCE À<br> CHAQUE ÉTAPE</h1>
+<br>
+<p>Découvrez notre collection exclusive</p>
+<br>
+<br>
+<a href="panier.html"><button>AJOUTER AU PANIER</button></a>
+
+</div>
+
+</div>
+
+
+<div class="product-details">
+
+<h2>Grand Boubou Bazin riche premium</h2>
+
+<h1>30.000 FCFA</h1>
+
+<p>
+Confection soignée avec un tissu haut de gamme,<br>
+doux, léger et agréable à porter.
+Finitions raffinées <br>coupe éléganteet confort exceptionnel pour les <br> cérémonies,événements et occasions spéciales.
+</p>
+
+<h3>Tailles</h3>
+
+<div class="sizes">
+
+<button>M</button>
+
+<button>L</button>
+
+<button>XL</button>
+
+</div>
+
+<h3>Couleurs</h3>
+
+<div class="colors">
+
+<span class="blue"></span>
+
+<span class="green"></span>
+
+<span class="brown"></span>
+
+<span class="gold"></span>
+<div class="Details">Details</div>
+
+
+</div>
+
+<p>⭐Disponible en toutes les tailles</p>
+
+<p class="P1">Livraison partout au Sénégal</p>
+
+<p class="P2">Qualité garantie</p>
+
+<div class="text">
+
+<span>-</span>
+<span>1</span>
+<span>+</span>
+
+</div>
+
+<button class="buton">
+AJOUTER AU PANIER
+</button>
+
+</div>
+
+</section>
+
+
+<!-- Recommandations -->
+<section>
+
+<h2 id="H1">Vous pourriez aussi aimer</h2> <div class="reco">Recommandations</div>
+<div>
+
+<div class="cards">
+
+<div class="card">
+
+<img src="images/robe-africaine.jpg">
+
+<h3>Kaay  Sool <br>Robe Africaine</h3>
+
+<p>20 000 FCFA</p>
+
+<a href="panier.html"><button>AJOUTER AU PANIER</button>
+</a>
+</div>
+
+<div class="card">
+
+<img src="images/ensemble-traditionnel.jpg">
+
+<h3>Kaay  Sool <br>Ensemble Tenue Africaine</h3>
+
+<p>40 000 FCFA</p>
+
+<a href="panier.html"><button>AJOUTER AU PANIER</button>
+</a>
+
+</div>
+
+<div class="card">
+
+<img src="images/costume-africain.jpg">
+
+<h3>Kaay  Sool <br>Costume-Africain</h3>
+
+<p>20 000 FCFA</p>
+
+<a href="panier.html"><button>AJOUTER AU PANIER</button>
+</a>
+
+</div>
+
+<div class="card">
+
+<img src="images/Ensemble.jpg">
+
+<h3>Kaay  Sool <br>Tenue Femme</h3>
+
+<p>50 000 FCFA</p>
+
+<a href="panier.html"><button>AJOUTER AU PANIER</button>
+</a>
+
+</div>
+
+</div>
+</div>
+
+</section>
+
+
+ <!-- FOOTER-->
+<footer>
+  <div class="footer-grid">
+  <div class="footer-col">
+    <div class="footer-brand">KAAY SOOL</div>
+    <p>L'élégance et le style sénégalais à portée de clic.</p>
+    <div class="social-links">
+      <a href="https://instagram.com/kaaysool" target="_blank" class="ig">
+        <img src="images/instagram.png" alt="Instagram">
+      </a>
+      <a href="https://wa.me/221763693421" target="_blank" class="wa">
+        <img src="images/whatsapp.png" alt="WhatsApp">
+      </a>
+      <a href="https://facebook.com/kaaysool" target="_blank" class="fb">
+        <img src="images/facebook.png" alt="Facebook">
+      </a>
+    </div>
+  </div>
+    <div class="footer-col">
+      <h4>Besoin d'aide</h4>
+      <a href="#">Contactez-nous</a>
+      <a href="#">Suivi de commande</a>
+      <a href="#">Guide des tailles</a>
+      <a href="#">FAQ</a>
+    </div>
+    <div class="footer-col">
+      <h4>Notre Boutique</h4>
+      <p>• Visitez notre showroom à Dakar, Sénégal.</p>
+      <p>• Tél: +221 763693421</p>
+      <p>• Email: contact@kaaysool.sn</p>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 KAAY SOOL. Tous droits réservés.</div>
+</footer>
+
+<link rel="stylesheet" href="script.js">
+</body>
+
+</html>
