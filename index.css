@@ -1,0 +1,141 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f5f5f5;
+}
+
+/* HEADER */
+
+header{
+    background:#0d0d1f;
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 60px;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:bold;
+    color:#d4af37;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin:0 15px;
+}
+
+.icons{
+    font-size:24px;
+}
+
+/* CATALOGUE */
+
+.catalogue{
+    display:flex;
+    padding:30px 60px;
+    gap:40px;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:250px;
+    background:white;
+    padding:20px;
+}
+
+.sidebar h2{
+    margin-bottom:20px;
+}
+
+.sidebar h3{
+    margin:20px 0 10px;
+}
+
+.sidebar label{
+    display:block;
+    margin-bottom:10px;
+}
+
+/* PRODUITS */
+
+.products{
+    flex:1;
+}
+
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:20px;
+}
+
+.sort a{
+    text-decoration:none;
+    color:black;
+    margin-left:10px;
+}
+
+/* GRID */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.card{
+    background:white;
+    padding:10px;
+    border-radius:10px;
+}
+
+.card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    border-radius:8px;
+}
+
+.card h4{
+    margin-top:10px;
+    font-size:15px;
+}
+
+.price{
+    margin:10px 0;
+    font-weight:bold;
+}
+
+.card button{
+    width:100%;
+    background:#d4af37;
+    border:none;
+    padding:10px;
+    border-radius:20px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+/* FOOTER */
+
+footer{
+    background:#0d0d1f;
+    color:white;
+    display:flex;
+    justify-content:space-around;
+    padding:40px;
+    margin-top:40px;
+}
+
+footer h3{
+    color:#d4af37;
+    margin-bottom:10px;
+}
