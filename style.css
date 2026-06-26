@@ -38,7 +38,7 @@ body {
   box-shadow: 0 2px 20px rgba(201,168,76,0.15);
 }
 
-.logo {
+.logo { 
     height: 50%;
     width: auto;
     max-width: 150px;

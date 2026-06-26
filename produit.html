@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Produit – KAAY SOOL</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* ===== PRODUCT VIEW ===== */
+.product-view {
+display: grid;
+grid-template-columns: 1fr 1fr;
+background: var(--white);
+}
+
+/* CÔTÉ GAUCHE – IMAGE */
+.product-image-side {
+position: relative;
+overflow: hidden;
+}
+
+.product-label {
+position: absolute;
+top: 20px;
+left: 20px;
+background: var(--dark);
+color: var(--white);
+font-size: 10px;
+letter-spacing: 3px;
+text-transform: uppercase;
+padding: 8px 18px;
+border-radius: 20px;
+z-index: 2;
+}
+
+/* ============================================================
+IMAGE PRINCIPALE DU PRODUIT
+👇 Remplace src="images/boubou-bazin.jpg" par ta photo
+============================================================ */
+.product-main-img {
+width: 100%;
+height: 580px;
+object-fit: cover;
+display: block;
+}
+
+/* OVERLAY TEXTE SUR L'IMAGE */
+.hero-text-overlay {
+position: absolute;
+bottom: 0; left: 0; right: 0;
+background: linear-gradient(to top, rgba(0,0,0,0.75), transparent);
+padding: 40px 35px;
+color: var(--white);
+}
+
+.hero-text-overlay h3 {
+font-family: 'Cormorant Garamond', serif;
+font-size: 30px;
+font-weight: 700;
+line-height: 1.2;
+margin-bottom: 8px;
+}
+
+.hero-text-overlay p {
+font-size: 12px;
+color: rgba(255,255,255,0.7);
+letter-spacing: 2px;
+margin-bottom: 22px;
+}
+
+/* CÔTÉ DROIT – INFOS PRODUIT */
+.product-info {
+padding: 50px 50px;
+overflow-y: auto;
+background: var(--white);
+}
+
+.product-name {
+font-family: 'Cormorant Garamond', serif;
+font-size: 24px;
+font-weight: 700;
+color: var(--gold);
+margin-bottom: 10px;
+letter-spacing: 1px;
+}
+
+.product-price-big {
+font-size: 34px;
+font-weight: 700;
+color: var(--dark);
+margin-bottom: 15px;
+}
+
+.product-desc {
+font-size: 13px;
+line-height: 1.9;
+color: var(--text-gray);
+margin-bottom: 28px;
+}
+
+/* TAILLES */
+.option-label {
+font-size: 11px;
+font-weight: 700;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(--dark);
+margin-bottom: 12px;
+}
+
+.taille-options {
+display: flex;
+gap: 10px;
+margin-bottom: 25px;
+flex-wrap: wrap;
+}
+
+.taille-opt {
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 10px 16px;
+border: 2px solid #ddd;
+background: var(--white);
+font-family: 'Josefin Sans', sans-serif;
+font-size: 14px;
+font-weight: 700;
+cursor: pointer;
+border-radius: 8px;
+transition: all 0.2s;
+min-width: 52px;
+}
+
+.taille-opt:hover, .taille-opt.selected {
+border-color: var(--gold);
+background: var(--gold);
+color: var(--dark);
+}
+
+.taille-sub {
+font-size: 9px;
+color: var(--text-gray);
+letter-spacing: 1px;
+margin-top: 3px;
+}
+
+.taille-opt.selected .taille-sub { color: var(--dark); }
+
+/* COULEURS */
+.couleur-options {
+display: flex;
+gap: 10px;
+margin-bottom: 25px;
+flex-wrap: wrap;
+}
+
+.couleur-dot {
+width: 32px;
+height: 32px;
+border-radius: 6px;
+cursor: pointer;
+border: 2px solid transparent;
+transition: all 0.2s;
+}
+
+.couleur-dot.selected, .couleur-dot:hover {
+border-color: var(--gold);
+transform: scale(1.15);
+}
+
+/* FEATURES */
+.product-features {
+margin-bottom: 28px;
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+
+.feature-item {
+display: flex;
+align-items: center;
+gap: 10px;
+font-size: 13px;
+color: var(--text-gray);
+}
+
+.feature-item .icon { font-size: 16px; }
+
+/* QUANTITÉ + BOUTON */
+.add-to-cart-row {
+display: flex;
+align-items: center;
+gap: 15px;
+margin-top: 5px;
+flex-wrap: wrap;
+}
+
+.qty-control {
+display: flex;
+align-items: center;
+border: 2px solid #ddd;
+border-radius: 30px;
+overflow: hidden;
+}
+
+.qty-btn {
+width: 42px;
+height: 46px;
+border: none;
+background: transparent;
+font-size: 22px;
+cursor: pointer;
+font-family: 'Josefin Sans', sans-serif;
+transition: background 0.2s;
+line-height: 1;
+}
+
+.qty-btn:hover { background: var(--cream); }
+
+.qty-val {
+width: 42px;
+text-align: center;
+font-size: 16px;
+font-weight: 700;
+font-family: 'Josefin Sans', sans-serif;
+}
+
+/* ===== RECOMMENDATIONS ===== */
+.recommendations {
+padding: 50px 60px;
+background: var(--cream);
+}
+
+.recommendations h2 {
+font-family: 'Cormorant Garamond', serif;
+font-size: 22px;
+font-weight: 700;
+color: var(--dark);
+margin-bottom: 30px;
+}
+
+.reco-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 20px;
+}
+
+/* ============================================================
+IMAGES RECOMMANDATIONS
+👇 Chaque produit recommandé a une <img> à remplacer
+============================================================ */
+.reco-img {
+width: 100%;
+height: 200px;
+object-fit: cover;
+border-radius: 10px 10px 0 0;
+}
+
+@media (max-width: 900px) {
+.product-view { grid-template-columns: 1fr; }
+.product-main-img { height: 400px; }
+.reco-grid { grid-template-columns: repeat(2, 1fr); }
+.recommendations { padding: 30px 20px; }
+.product-info { padding: 30px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+<a href="index.html" class="logo">
+<!-- 👇 Remplace src="images/logo.png" par ton logo -->
+<img src="images/logos.jpg" alt="KAAY SOOL" style="height:50px;object-fit:contain;">
+</a>
+<ul class="nav-links">
+<li><a href="catalogue.html?cat=homme">Homme</a></li>
+<li><a href="catalogue.html?cat=femme">Femme</a></li>
+<li><a href="#">La Marque</a></li>
+<li><a href="#">Nos Magasins</a></li>
+</ul>
+<div class="nav-actions">
+  <a href="catalogue.html">
+    <img src="images/recherche.png" alt="Recherche" class="nav-icon-img">
+  </a>
+  <a href="inscription.html">
+    <img src="images/Utilisateur.png" alt="Compte" class="nav-icon-img">
+  </a>
+  <span class="lang-switch">FR / ENG</span>
+  <a href="panier.html" class="cart-btn">
+    <img src="images/Panier.png" alt="Panier" class="nav-icon-img">
+    <span class="cart-count" id="cartCount">0</span>
+  </a>
+</div>
+</nav>
+
+<!-- PRODUCT VIEW -->
+<section class="product-view">
+
+<!-- CÔTÉ GAUCHE : IMAGE -->
+<div class="product-image-side">
+<div class="product-label">Nouvelles produites</div>
+
+<!-- ============================================================
+IMAGE PRINCIPALE
+👇 Remplace src="images/boubou-bazin.jpg"
+par ta photo du produit
+============================================================ -->
+<img
+class="product-main-img"
+id="productMainImg"
+src="images/boubou-bazin ricche.jpg"
+alt="Produit KAAY SOOL"
+>
+
+<!-- OVERLAY avec texte + bouton -->
+<div class="hero-text-overlay">
+<h3>L'ÉLÉGANCE À<br>CHAQUE ÉTAPE</h3>
+<p>Découvrez notre collection exclusive</p>
+<a href="catalogue.html" class="btn-gold">Ajouter au Panier</a>
+</div>
+</div>
+
+<!-- CÔTÉ DROIT : INFORMATIONS -->
+<div class="product-info">
+
+<div class="product-name" id="productName">Grand Boubou Bazin riche premium</div>
+<div class="product-price-big" id="productPrice">30.000 FCFA</div>
+<p class="product-desc" id="productDesc">
+Confection soignée avec un tissu haut de gamme, doux, léger et agréable à porter.
+Finitions raffinées, coupe élégante et confort exceptionnel pour les cérémonies,
+événements et occasions spéciales.
+</p>
+
+<!-- TAILLES -->
+<div class="option-label">Taille</div>
+<div class="taille-options" id="tailleOptions">
+<button class="taille-opt selected" onclick="selectTaille(this,'M')">
+M <span class="taille-sub">XS XL</span>
+</button>
+<button class="taille-opt" onclick="selectTaille(this,'L')">
+L <span class="taille-sub">XS XL</span>
+</button>
+<button class="taille-opt" onclick="selectTaille(this,'XL')">
+XL <span class="taille-sub">XS XL</span>
+</button>
+</div>
+
+<!-- COULEURS -->
+<div class="option-label">Couleurs</div>
+<div class="couleur-options" id="couleurOptions">
+<div class="couleur-dot selected" style="background:#ADD8E6;" onclick="selectCouleur(this,'#ADD8E6')"></div>
+<div class="couleur-dot" style="background:#228B22;" onclick="selectCouleur(this,'#228B22')"></div>
+<div class="couleur-dot" style="background:#8B4513;" onclick="selectCouleur(this,'#8B4513')"></div>
+<div class="couleur-dot" style="background:#556B2F;" onclick="selectCouleur(this,'#556B2F')"></div>
+</div>
+
+<!-- FEATURES -->
+<div class="product-features">
+<div class="feature-item">
+<span class="icon">✨</span> Disponible en toutes les tailles
+</div>
+<div class="feature-item">
+<span class="icon">🚚</span> Livraison partout au Sénégal
+</div>
+<div class="feature-item">
+<span class="icon">✅</span> Qualité garantie
+</div>
+</div>
+
+<!-- QUANTITÉ + AJOUTER AU PANIER -->
+<div class="add-to-cart-row">
+<div class="qty-control">
+<button class="qty-btn" onclick="changeQty(-1)">−</button>
+<span class="qty-val" id="qtyVal">1</span>
+<button class="qty-btn" onclick="changeQty(1)">+</button>
+</div>
+<button class="btn-gold" style="flex:1;padding:15px;" onclick="handleAddToCart()">
+Ajouter au Panier
+</button>
+</div>
+
+</div>
+</section>
+
+<!-- VOUS POURRIEZ AUSSI AIMER -->
+<section class="recommendations">
+<h2>Vous pourriez aussi aimer</h2>
+<div class="reco-grid">
+
+<!-- RECO 1 -->
+<!-- 👇 Remplace src="images/robe-africaine.jpg" -->
+<div class="product-card">
+<a href="produit.html?id=7">
+<img class="reco-img" src="images/robe-africaine.jpg" alt="Robe Africaine">
+</a>
+<div class="product-card-body">
+<div class="product-card-name">Kaay Sool – Robe Africaine</div>
+<div class="product-card-price">20 000f CFA</div>
+<button class="btn-gold" style="width:100%;padding:10px;font-size:10px;" onclick="addToCart(7)">Ajouter au Panier</button>
+</div>
+</div>
+
+<!-- RECO 2 -->
+<!-- 👇 Remplace src="images/ensemble.jpg" -->
+<div class="product-card">
+<a href="produit.html?id=4">
+<img class="reco-img" src="images/ensemble.jpg" alt="Ensemble Tenu Africaine">
+</a>
+<div class="product-card-body">
+<div class="product-card-name">Kaay Sool – Ensemble Tenu Africaine</div>
+<div class="product-card-price">40 000f CFA</div>
+<button class="btn-gold" style="width:100%;padding:10px;font-size:10px;" onclick="addToCart(4)">Ajouter au Panier</button>
+</div>
+</div>
+
+<!-- RECO 3 -->
+<!-- 👇 Remplace src="images/costume-africain.jpg" -->
+<div class="product-card">
+<a href="produit.html?id=2">
+<img class="reco-img" src="images/costume-africain.jpg" alt="Robe Africaine Homme">
+</a>
+<div class="product-card-body">
+<div class="product-card-name">Kaay Sool – Robe Africaine</div>
+<div class="product-card-price">20 000f CFA</div>
+<button class="btn-gold" style="width:100%;padding:10px;font-size:10px;" onclick="addToCart(2)">Ajouter au Panier</button>
+</div>
+</div>
+
+<!-- RECO 4 -->
+<!-- 👇 Remplace src="images/tenue-femme-premium.jpg" -->
+<div class="product-card">
+<a href="produit.html?id=6">
+<img class="reco-img" src="images/tenue-femme-premium.jpg" alt="Tenu Africaine Femme">
+</a>
+<div class="product-card-body">
+<div class="product-card-name">Kaay Sool – Tenu Africaine Femme</div>
+<div class="product-card-price">50 000f CFA</div>
+<button class="btn-gold" style="width:100%;padding:10px;font-size:10px;" onclick="addToCart(6)">Ajouter au Panier</button>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+<div class="footer-grid">
+  <div class="footer-col">
+    <div class="footer-brand">KAAY SOOL</div>
+    <p>L'élégance et le style sénégalais à portée de clic.</p>
+    <div class="social-links">
+      <a href="https://instagram.com/kaaysool" target="_blank" class="ig">
+        <img src="images/instagram.png" alt="Instagram">
+      </a>
+      <a href="https://wa.me/221763693421" target="_blank" class="wa">
+        <img src="images/whatsapp.png" alt="WhatsApp">
+      </a>
+      <a href="https://facebook.com/kaaysool" target="_blank" class="fb">
+        <img src="images/facebook.png" alt="Facebook">
+      </a>
+    </div>
+  </div>
+<div class="footer-col">
+<h4>Besoin d'aide</h4>
+<a href="#">Contactez-nous</a>
+<a href="#">Suivi de commande</a>
+<a href="#">Guide des tailles</a>
+<a href="#">FAQ</a>
+</div>
+<div class="footer-col">
+<h4>Notre Boutique</h4>
+<p>• Visitez notre showroom à Dakar, Sénégal.</p>
+<p>• Tél: +221 763693421</p>
+<p>• Email: contact@kaaysool.sn</p>
+</div>
+</div>
+<div class="footer-bottom">© 2026 KAAY SOOL. Tous droits réservés.</div>
+</footer>
+
+<script src="script.js"></script>
+<script>
+let qty = 1;
+let selectedTaille = 'M';
+let selectedCouleur = '#ADD8E6';
+
+// Charger le bon produit selon l'URL (?id=X)
+const urlId = parseInt(new URLSearchParams(window.location.search).get('id')) || 1;
+const currentProduct = products.find(p => p.id === urlId) || products[0];
+
+// Remplir les infos
+document.getElementById('productName').textContent = currentProduct.name;
+document.getElementById('productPrice').textContent = currentProduct.price.toLocaleString('fr-FR') + ' FCFA';
+document.getElementById('productDesc').textContent = currentProduct.desc;
+document.getElementById('productMainImg').src = currentProduct.img;
+document.getElementById('productMainImg').alt = currentProduct.name;
+document.title = currentProduct.name + ' – KAAY SOOL';
+
+// Tailles dynamiques
+const tailleDiv = document.getElementById('tailleOptions');
+tailleDiv.innerHTML = '';
+currentProduct.taille.forEach((t, i) => {
+const btn = document.createElement('button');
+btn.className = 'taille-opt' + (i === 0 ? ' selected' : '');
+btn.innerHTML = `${t} <span class="taille-sub">XS XL</span>`;
+btn.onclick = () => selectTaille(btn, t);
+tailleDiv.appendChild(btn);
+});
+selectedTaille = currentProduct.taille[0];
+
+// Couleurs dynamiques
+const couleurDiv = document.getElementById('couleurOptions');
+couleurDiv.innerHTML = '';
+currentProduct.couleurs.forEach((c, i) => {
+const dot = document.createElement('div');
+dot.className = 'couleur-dot' + (i === 0 ? ' selected' : '');
+dot.style.background = c;
+dot.onclick = () => selectCouleur(dot, c);
+couleurDiv.appendChild(dot);
+});
+selectedCouleur = currentProduct.couleurs[0];
+
+function selectTaille(btn, val) {
+document.querySelectorAll('.taille-opt').forEach(b => b.classList.remove('selected'));
+btn.classList.add('selected');
+selectedTaille = val;
+}
+
+function selectCouleur(dot, val) {
+document.querySelectorAll('.couleur-dot').forEach(d => d.classList.remove('selected'));
+dot.classList.add('selected');
+selectedCouleur = val;
+}
+
+function changeQty(delta) {
+qty = Math.max(1, qty + delta);
+document.getElementById('qtyVal').textContent = qty;
+}
+
+function handleAddToCart() {
+addToCart(currentProduct.id, qty, selectedTaille, selectedCouleur);
+}
+
+updateCartUI();
+</script>
+</body>
+</html>
