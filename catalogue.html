@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catalogue – KAAY SOOL</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .catalogue-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: calc(100vh - 75px);
+    }
+    .sidebar {
+      background: var(--white);
+      padding: 40px 30px;
+      border-right: 1px solid #eee;
+    }
+    .sidebar h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px; font-weight: 700;
+      letter-spacing: 2px; color: var(--dark);
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--gold);
+      margin-bottom: 10px;
+    }
+    .filter-section { margin-top: 30px; }
+    .filter-section h3 {
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--dark); margin-bottom: 18px;
+    }
+    .checkbox-group { display: flex; flex-direction: column; gap: 12px; }
+    .checkbox-item {
+      display: flex; align-items: center; gap: 12px;
+      cursor: pointer; font-size: 14px; letter-spacing: 1px;
+    }
+    .checkbox-item input { width: 18px; height: 18px; accent-color: var(--gold); }
+    .taille-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .taille-btn {
+      padding: 10px; border: 1.5px solid #ddd;
+      background: transparent; font-family: 'Josefin Sans', sans-serif;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      border-radius: 6px; transition: all 0.2s;
+    }
+    .taille-btn.active, .taille-btn:hover {
+      border-color: var(--gold); background: var(--gold); color: var(--dark);
+    }
+    .price-range { display: flex; align-items: center; gap: 10px; margin-top: 15px; }
+    .price-tag {
+      background: var(--cream-2); border: 1.5px solid #ddd;
+      padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    }
+    .filter-divider { height: 1px; background: #eee; margin: 25px 0; }
+    .catalogue-main { padding: 40px; background: var(--cream); }
+    .catalogue-header { margin-bottom: 30px; }
+    .result-count { font-size: 14px; color: var(--text-gray); letter-spacing: 1px; }
+    .result-count span { color: var(--dark); font-weight: 700; }
+    .products-grid-cat {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    /* ===== CARTE PRODUIT CATALOGUE ===== */
+    .cat-card {
+      background: var(--white);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+      transition: all 0.3s;
+    }
+    .cat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    }
+    /* L'image est cliquable vers le produit */
+    .cat-card-img-link { display: block; cursor: pointer; }
+    .cat-card-img-link img {
+      width: 100%; height: 260px; object-fit: cover; display: block;
+    }
+    .cat-card-body { padding: 18px; }
+    .cat-card-name {
+      font-size: 13px; font-weight: 600;
+      letter-spacing: 1px; color: var(--dark); margin-bottom: 6px;
+    }
+    .cat-card-price {
+      font-size: 15px; font-weight: 700;
+      color: var(--gold); margin-bottom: 12px;
+    }
+    /* Bouton séparé du lien image */
+    .cat-card-btn {
+      width: 100%; padding: 10px;
+      background: var(--gold); color: var(--dark);
+      border: none; border-radius: 30px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase;
+      cursor: pointer; transition: all 0.3s;
+    }
+    .cat-card-btn:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 1200px) { .products-grid-cat { grid-template-columns: repeat(3,1fr); } }
+    @media (max-width: 900px) {
+      .catalogue-layout { grid-template-columns: 1fr; }
+      .products-grid-cat { grid-template-columns: repeat(2,1fr); }
+      .catalogue-main { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="logo">
+    <img src="images/logos.jpg" alt="KAAY SOOL" style="height:50px;object-fit:contain;">
+  </a>
+  <ul class="nav-links">
+    <li><a href="catalogue.html?cat=homme">Homme</a></li>
+    <li><a href="catalogue.html?cat=femme">Femme</a></li>
+    <li><a href="#">La Marque</a></li>
+    <li><a href="#">Nos Magasins</a></li>
+  </ul>
+  <div class="nav-actions">
+  <a href="catalogue.html">
+    <img src="images/recherche.png" alt="Recherche" class="nav-icon-img">
+  </a>
+  <a href="inscription.html">
+    <img src="images/Utilisateur.png" alt="Compte" class="nav-icon-img">
+  </a>
+  <span class="lang-switch">FR / ENG</span>
+  <a href="panier.html" class="cart-btn">
+    <img src="images/Panier.png" alt="Panier" class="nav-icon-img">
+    <span class="cart-count" id="cartCount">0</span>
+  </a>
+</div>
+</nav>
+
+<div class="catalogue-layout">
+  <aside class="sidebar">
+    <h2>FILTRER</h2>
+    <div class="filter-section">
+      <h3>Catégories</h3>
+      <div class="checkbox-group">
+        <label class="checkbox-item"><input type="checkbox" id="cat-homme" onchange="applyFilters()"> Homme</label>
+        <label class="checkbox-item"><input type="checkbox" id="cat-femme" onchange="applyFilters()"> Femme</label>
+        <label class="checkbox-item"><input type="checkbox" id="cat-ensemble" onchange="applyFilters()"> Ensembles</label>
+        <label class="checkbox-item"><input type="checkbox" id="cat-accessoire" onchange="applyFilters()"> Accessoires</label>
+      </div>
+    </div>
+    <div class="filter-divider"></div>
+    <div class="filter-section">
+      <h3>Taille</h3>
+      <div class="taille-grid">
+        <button class="taille-btn" onclick="toggleTaille(this,'M')">M</button>
+        <button class="taille-btn" onclick="toggleTaille(this,'L')">L</button>
+        <button class="taille-btn" onclick="toggleTaille(this,'XL')">XL</button>
+        <button class="taille-btn" onclick="toggleTaille(this,'XXL')">XXL</button>
+      </div>
+    </div>
+    <div class="filter-divider"></div>
+    <div class="filter-section">
+      <h3>Prix</h3>
+      <div class="price-range">
+        <span class="price-tag">65 000 CFA</span>
+        <span style="color:var(--text-gray);">–</span>
+        <span class="price-tag">15 000 CFA</span>
+      </div>
+      <input type="range" id="priceRange" min="15000" max="65000" value="65000"
+        style="width:100%;margin-top:15px;accent-color:var(--gold);" oninput="applyFilters()">
+    </div>
+  </aside>
+
+  <main class="catalogue-main">
+    <div class="catalogue-header">
+      <p class="result-count"><span id="resultCount">8</span> articles trouvés</p>
+    </div>
+    <div class="products-grid-cat">
+
+      <!-- ============================================================
+           PRODUIT 1
+           👇 Remplace src="images/ensemble-traditionnel.jpg"
+      ============================================================ -->
+      <div class="cat-card" data-cat="homme" data-taille="L XL XXL" data-prix="65000">
+        <a class="cat-card-img-link" href="produit.html?id=5">
+          <img src="images/ensemble-traditionnel.jpg" alt="Ensemble Traditionnel">
+        </a>
+        <div class="cat-card-body">
+          <div class="cat-card-name">KAAY SOOL – Ensemble Traditionnel</div>
+          <div class="cat-card-price">65 000 CFA</div>
+          <button class="cat-card-btn" onclick="addToCart(5)">Ajouter au Panier</button>
+        </div>
+      </div>
+
+      <!-- PRODUIT 2 -->
+      <!-- 👇 Remplace src="images/tenue-femme-premium.jpg" -->
+      <div class="cat-card" data-cat="femme" data-taille="S M L XL" data-prix="50000">
+        <a class="cat-card-img-link" href="produit.html?id=6">
+          <img src="images/tenue-femme-premium.jpg" alt="Tenue Africaine Femme Premium">
+        </a>
+        <div class="cat-card-body">
+          <div class="cat-card-name">KAAY SOOL – Tenue Africaine Femme</div>
+          <div class="cat-card-price">50 000 CFA</div>
+          <button class="cat-card-btn" onclick="addToCart(6)">Ajouter au Panier</button>
+        </div>
+      </div>
+
+      <!-- PRODUIT 3 -->
+      <!-- 👇 Remplace src="images/ensemble.jpg" -->
+      <div class="cat-card" data-cat="ensemble" data-taille="M L XL" data-prix="40000">
+        <a class="cat-card-img-link" href="produit.html?id=4">
+          <img src="images/ensemble.jpg" alt="Ensemble Tenue Africaine">
+        </a>
+        <div class="cat-card-body">
+          <div class="cat-card-name">KAAY SOOL – Ensemble Tenue Africaine</div>
+          <div class="cat-card-price">40 000 CFA</div>
+          <button class="cat-card-btn" onclick="addToCart(4)">Ajouter au Panier</button>
+        </div>
+      </div>
+
+      <!-- PRODUIT 4 -->
+      <!-- 👇 Remplace src="images/tenue-homme.jpg" -->
+      <div class="cat-card" data-cat="homme" data-taille="M L XL" data-prix="35000">
+        <a class="cat-card-img-link" href="produit.html?id=8">
+          <img src="images/tenue-homme.jpg" alt="Tenue Africain Homme">
+        </a>
+        <div class="cat-card-body">
+          <div class="cat-card-name">KAAY SOOL – Tenue Africain Homme</div>
+          <div class="cat-card-price">35 000 CFA</div>
+          <button class="cat-card-btn" onclick="addToCart(8)">Ajouter au Panier</button>
+        </div>
+      </div>
+
+      <!-- PRODUIT 5 -->
+      <!-- 👇 Remplace src="images/boubou-bazin.jpg" -->
+      <div class="cat-card" data-cat="homme" data-taille="M L XL" data-prix="30000">
+        <a class="cat-card-img-link" href="produit.html?id=1">
+          <img src="images/boubou-bazin.jpg" alt="Grand Boubou Bazin Riche">
+        </a>
+        <div class="cat-card-body">
+          <div class="cat-card-name">KAAY SOOL – Grand Boubou Bazin Riche</div>
+          <div class="cat-card-price">30 000 CFA</div>
+          <button class="cat-card-btn" onclick="addToCart(1)">Ajouter au Panier</button>
+        </div>
+      </div>
+
+      <!-- PRODUIT 6 -->
+      <!-- 👇 Remplace src="images/costume-africain.jpg" -->
+      <div class="cat-card" data-cat="homme" data-taille="M L XL XXL" data-prix="25000">
+        <a class="cat-card-img-link" href="produit.html?id=2">
+          <img src="images/costume-africain.jpg" alt="Costume Africain">
+        </a>
+        <div class="cat-card-body">
+          <div class="cat-card-name">KAAY SOOL – Costume Africain</div>
+          <div class="cat-card-price">25 000 CFA</div>
+          <button class="cat-card-btn" onclick="addToCart(2)">Ajouter au Panier</button>
+        </div>
+      </div>
+
+      <!-- PRODUIT 7 -->
+      <!-- 👇 Remplace src="images/robe-africaine.jpg" -->
+      <div class="cat-card" data-cat="femme" data-taille="S M L" data-prix="20000">
+        <a class="cat-card-img-link" href="produit.html?id=7">
+          <img src="images/robe-africaine.jpg" alt="Robe Africaine">
+        </a>
+        <div class="cat-card-body">
+          <div class="cat-card-name">KAAY SOOL – Robe Africaine</div>
+          <div class="cat-card-price">20 000 CFA</div>
+          <button class="cat-card-btn" onclick="addToCart(7)">Ajouter au Panier</button>
+        </div>
+      </div>
+
+      <!-- PRODUIT 8 -->
+      <!-- 👇 Remplace src="images/tenue-femme.jpg" -->
+      <div class="cat-card" data-cat="femme" data-taille="S M L" data-prix="15000">
+        <a class="cat-card-img-link" href="produit.html?id=3">
+          <img src="images/tenue-femme.jpg" alt="Tenue Africaine Femme">
+        </a>
+        <div class="cat-card-body">
+          <div class="cat-card-name">KAAY SOOL – Tenue Africaine Femme</div>
+          <div class="cat-card-price">15 000 CFA</div>
+          <button class="cat-card-btn" onclick="addToCart(3)">Ajouter au Panier</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="footer-grid">
+  <div class="footer-col">
+    <div class="footer-brand">KAAY SOOL</div>
+    <p>L'élégance et le style sénégalais à portée de clic.</p>
+    <div class="social-links">
+      <a href="https://instagram.com/kaaysool" target="_blank" class="ig">
+        <img src="images/instagram.png" alt="Instagram">
+      </a>
+      <a href="https://wa.me/221763693421" target="_blank" class="wa">
+        <img src="images/whatsapp.png" alt="WhatsApp">
+      </a>
+      <a href="https://facebook.com/kaaysool" target="_blank" class="fb">
+        <img src="images/facebook.png" alt="Facebook">
+      </a>
+    </div>
+  </div>
+    <div class="footer-col">
+      <h4>Besoin d'aide</h4>
+      <a href="#">Contactez-nous</a>
+      <a href="#">Suivi de commande</a>
+      <a href="#">Guide des tailles</a>
+      <a href="#">FAQ</a>
+    </div>
+    <div class="footer-col">
+      <h4>Notre Boutique</h4>
+      <p>• Visitez notre showroom à Dakar, Sénégal.</p>
+      <p>• Tél: +221 763693421</p>
+      <p>• Email: contact@kaaysool.sn</p>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 KAAY SOOL. Tous droits réservés.</div>
+</footer>
+
+<script src="script.js"></script>
+<script>
+  let selectedTaille = null;
+
+  function toggleTaille(btn, val) {
+    document.querySelectorAll('.taille-btn').forEach(b => b.classList.remove('active'));
+    selectedTaille = selectedTaille === val ? null : val;
+    if (selectedTaille) btn.classList.add('active');
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const cats = [];
+    if (document.getElementById('cat-homme').checked) cats.push('homme');
+    if (document.getElementById('cat-femme').checked) cats.push('femme');
+    if (document.getElementById('cat-ensemble').checked) cats.push('ensemble');
+    const maxPrice = parseInt(document.getElementById('priceRange').value);
+    let count = 0;
+    document.querySelectorAll('.cat-card').forEach(card => {
+      const cat    = card.dataset.cat;
+      const prix   = parseInt(card.dataset.prix);
+      const tailles = card.dataset.taille || '';
+      let show = true;
+      if (cats.length > 0 && !cats.includes(cat)) show = false;
+      if (selectedTaille && !tailles.includes(selectedTaille)) show = false;
+      if (prix > maxPrice) show = false;
+      card.style.display = show ? 'block' : 'none';
+      if (show) count++;
+    });
+    document.getElementById('resultCount').textContent = count;
+  }
+
+  // Filtre URL au chargement
+  const urlCat = new URLSearchParams(window.location.search).get('cat');
+  if (urlCat === 'homme') document.getElementById('cat-homme').checked = true;
+  if (urlCat === 'femme') document.getElementById('cat-femme').checked = true;
+  if (urlCat) applyFilters();
+
+  updateCartUI();
+</script>
+</body>
+</html>
