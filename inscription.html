@@ -183,7 +183,7 @@ style="height:45px;object-fit:contain;">
 <div class="auth-image">
 
 <!-- LOGO -->
-<!-- 👇 Remplace src="images/logo.png" par ton image -->
+
 <img
 class="auth-logo-img"
 src="images/logos.jpg"
@@ -232,35 +232,7 @@ alt="KAAY SOOL – Mode Sénégalaise"
 
 <button class="btn-gold"
 style="width:100%;padding:16px;margin-top:10px;"
-onclick="function handleRegister() {
-  const email   = document.getElementById('regEmail').value.trim();
-  const pass    = document.getElementById('regPass').value;
-  const confirm = document.getElementById('regPassConfirm').value;
-
-  if (!email || !pass) return showNotification('Remplissez tous les champs');
-  if (pass !== confirm) return showNotification('Les mots de passe ne correspondent pas');
-  if (pass.length < 6) return showNotification('Mot de passe trop court (6 min)');
-
-  // Sauvegarder l'utilisateur
-  const users = JSON.parse(localStorage.getItem('kaaysool_users') || '[]');
-
-  // Vérifier si email existe déjà
-  if (users.find(u => u.email === email)) {
-    return showNotification('Cet email est déjà utilisé !');
-  }
-
-  users.push({
-    email,
-    date: new Date().toLocaleDateString('fr-FR'),
-    role: 'client'
-  });
-
-  localStorage.setItem('kaaysool_users', JSON.stringify(users));
-  localStorage.setItem('kaaysool_user', JSON.stringify({ email }));
-
-  showNotification('✅ Compte créé avec succès !');
-  setTimeout(() => window.location.href = 'index.html', 1500);
-}">
+onclick="handleRegister()">
 S'Inscrire
 </button>
 
@@ -347,7 +319,7 @@ btn.classList.toggle('active',
 }
 
 function handleRegister() {
-const email = document.getElementById('regEmail').value;
+const email = document.getElementById('regEmail').value.trime();
 const pass = document.getElementById('regPass').value;
 const confirm = document.getElementById('regPassConfirm').value;
 if (!email || !pass) return showNotification('Remplissez tous les champs');
